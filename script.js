@@ -1,4 +1,4 @@
-console.log("JavaScript is working!;)
+
   // Data extracted from SNIST documents
 const snistData = {
   timetable: [
