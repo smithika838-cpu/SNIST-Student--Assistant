@@ -1,4 +1,5 @@
-// Data extracted from SNIST documents
+console.log("JavaScript is working!;)
+  // Data extracted from SNIST documents
 const snistData = {
   timetable: [
     { day: "Monday", slots: ["09:00 - 12:20: EW Lab", "01:10 - 04:10: AEP Lab"] },
