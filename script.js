@@ -1,108 +1,113 @@
-// 1. SELECT ALL HTML ELEMENTS
-const doubtInput = document.querySelector('textarea');
-const searchInput = document.querySelector('input[placeholder*="subjects"]');
-const destinationSelect = document.querySelector('select');
-const buttons = document.querySelectorAll('button');
+// Data extracted from SNIST documents
+const snistData = {
+  timetable: [
+    { day: "Monday", slots: ["09:00 - 12:20: EW Lab", "01:10 - 04:10: AEP Lab"] },
+    { day: "Tuesday", slots: ["09:00 - 09:50: PPS", "09:50 - 10:40: PPS", "10:40 - 11:30: ES", "11:30 - 12:20: EDC", "01:10 - 01:55: MAC", "01:55 - 02:40: ESE", "02:40 - 04:10: LPE"] },
+    { day: "Wednesday", slots: ["09:00 - 09:50: ESE", "09:50 - 10:40: MAC", "10:40 - 11:30: AEP", "11:30 - 12:20: EDC", "01:10 - 02:40: ELCS LAB", "02:40 - 03:25: PPS", "03:25 - 04:10: Mentoring"] },
+    { day: "Thursday", slots: ["09:00 - 09:50: MAC", "09:50 - 10:40: ES", "10:40 - 12:20: AEP", "01:10 - 01:55: PPS", "01:55 - 02:40: EDC", "02:40 - 03:25: ESE", "03:25 - 04:10: Mentoring"] },
+    { day: "Friday", slots: ["09:00 - 12:20: PPS LAB", "01:10 - 01:55: MAC", "01:55 - 02:40: AEP", "02:40 - 03:25: ESE", "03:25 - 04:10: Library"] },
+    { day: "Saturday", slots: ["09:00 - 09:50: PPS", "09:50 - 10:40: MAC", "10:40 - 11:30: AEP", "11:30 - 12:20: EDC"] }
+  ],
+  faculty: [
+    { subject: "AEP (Advanced Engineering Physics)", name: "Dr. Sumalatha M", email: "sumalatha.m@sreenidhi.edu.in", phone: "9494994258" },
+    { subject: "MC (Matrices and Calculus)", name: "Dr. Brahmachary S", email: "brahmachary.s@sreenidhi.edu.in", phone: "9866473209" },
+    { subject: "PPS (Programming for Problem Solving)", name: "Mastanvali D", email: "mastanvali.d@sreenidhi.edu.in", phone: "9441115950" },
+    { subject: "ESE (English for Skill Enhancement)", name: "Catharine L K", email: "catharine.l@sreenidhi.edu.in", phone: "9515809012" },
+    { subject: "ES (Environmental Science)", name: "Karthik B", email: "karthik.b@sreenidhi.edu.in", phone: "9848088754" },
+    { subject: "EDC (Electronic Devices and Circuits)", name: "Ramakrishna V", email: "ramakrishna.v@sreenidhi.edu.in", phone: "9000217673" }
+  ],
+  holidays: [
+    { date: "14-01-2026", occasion: "Bhogi" },
+    { date: "15-01-2026", occasion: "Sankranti / Pongal" },
+    { date: "26-01-2026", occasion: "Republic Day" },
+    { date: "15-02-2026", occasion: "Maha Shivaratri" },
+    { date: "03-03-2026", occasion: "Holi" },
+    { date: "19-03-2026", occasion: "Ugadi" },
+    { date: "21-03-2026", occasion: "Eid Ul Fitr (Ramzan)" },
+    { date: "15-08-2026", occasion: "Independence Day" },
+    { date: "08-11-2026", occasion: "Deepavali" },
+    { date: "25-12-2026", occasion: "Christmas" }
+  ],
+  buses: [
+    { route: "Route 6 (12:45 PM)", details: "Trimulgheery LIC - Bowenpally - Balanagar - Kukatpally - JNTU" },
+    { route: "Route 4 (12:45 PM)", details: "Vayupuri - Neredmet - Begumpet - Ameerpet - Jubilee Hills Check Post" },
+    { route: "Route 10 (12:45 PM)", details: "Hanuman Temple (RK Puram) - Alwal - Suchitra X Road - Kompally" },
+    { route: "Route 33 (12:45 PM)", details: "Rampally X Road - ECIL Radhika - Sainikpuri - Yapral Water Tank" },
+    { route: "Route 13 (16:25 PM)", details: "ECIL X Road - Moula Ali - Tarnaka - Seetafalmandi - Lakdikapul - Mehdipatnam" }
+  ]
+};
 
-// Create a single response box for AI answers and routing info
-const answerBox = document.createElement('div');
-answerBox.style.marginTop = '15px';
-answerBox.style.padding = '10px';
-answerBox.style.border = '1px solid #ccc';
-answerBox.style.borderRadius = '5px';
-answerBox.style.backgroundColor = '#f9f9f9';
-document.body.appendChild(answerBox);
+// Main Handler Function
+function processQuery(query) {
+  const q = query.toLowerCase();
+  
+  if (q.includes("timetable") || q.includes("class") || q.includes("schedule")) {
+    let html = "<strong>CSE-H Class Timetable (1st Year):</strong><br><ul>";
+    snistData.timetable.forEach(t => {
+      html += <li><strong>${t.day}:</strong> ${t.slots.join(" | ")}</li>;
+    });
+    return html + "</ul>";
+  }
 
-// Helper function to find buttons regardless of small typos or spaces
-const findButton = (text) => [...buttons].find(b => b.textContent.trim().toLowerCase() === text.toLowerCase());
+  if (q.includes("bus") || q.includes("route") || q.includes("transport")) {
+    let html = "<strong>SNIST Bus Routes:</strong><br><ul>";
+    snistData.buses.forEach(b => {
+      html += <li><strong>${b.route}:</strong> ${b.details}</li>;
+    });
+    return html + "</ul>";
+  }
 
-const getAnswerBtn = findButton('Get answer');
-const clearBtn = findButton('clear');
-const searchBtn = findButton('Search');
-const routeBtn = findButton('Show my route');
-const mapBtn = findButton('Find my way');
+  if (q.includes("faculty") || q.includes("teacher") || q.includes("contact")) {
+    let html = "<strong>CSE-H Faculty Directory:</strong><br><ul>";
+    snistData.faculty.forEach(f => {
+      html += <li><strong>${f.subject}:</strong> ${f.name} (${f.email} | ${f.phone})</li>;
+    });
+    return html + "</ul>";
+  }
 
-// -------------------------------------------------------------
-// 2. STUDY HELP: AI ANSWER BUTTON
-// -------------------------------------------------------------
-if (getAnswerBtn) {
-  getAnswerBtn.addEventListener('click', async () => {
-    const question = doubtInput ? doubtInput.value : '';
-    if (!question) {
-      alert("Please enter a question first!");
-      return;
-    }
+  if (q.includes("holiday") || q.includes("vacation") || q.includes("leave")) {
+    let html = "<strong>SNIST Holiday Calendar (2026):</strong><br><ul>";
+    snistData.holidays.forEach(h => {
+      html += <li><strong>${h.date}:</strong> ${h.occasion}</li>;
+    });
+    return html + "</ul>";
+  }
 
-    answerBox.innerText = "Thinking...";
+  if (q.includes("map") || q.includes("block") || q.includes("canteen") || q.includes("cet")) {
+    return `<strong>SNIST Campus Map Guide:</strong><br>
+    <ul>
+      <li><strong>Main Entrance:</strong> Lead straight down the main path towards Admin Block.</li>
+      <li><strong>CET 1 / Room 9108:</strong> Go straight past Block I & II, past Food Stalls, turn right at the end to reach CET 1.</li>
+      <li><strong>Canteen / Cafeteria:</strong> Located right near the Main Entrance on the right, and Cafeteria past Central Library.</li>
+      <li><strong>Play Ground & Courts:</strong> East side next to CET 2, CET 3, and Basketball court.</li>
+    </ul>`;
+  }
 
-    try {
-      const response = await fetch("https://api.featherless.ai/v1/chat/completions", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": "Bearer YOUR_API_KEY_HERE" // <--- PASTE FEATHERLESS API KEY HERE
-        },
-        body: JSON.stringify({
-          model: "meta-llama/Meta-Llama-3-8B-Instruct",
-          messages: [{ role: "user", content: question }]
-        })
-      });
-
-      const data = await response.json();
-      answerBox.innerText = data.choices[0].message.content;
-    } catch (error) {
-      answerBox.innerText = "Error fetching answer. Check your API key or internet connection.";
-      console.error(error);
-    }
-  });
+  return "I can help you with <strong>SNIST CSE-H Timetables, Bus Routes, Faculty Contacts, Holidays, and Campus Navigation</strong>. Try asking about one of those!";
 }
 
-// -------------------------------------------------------------
-// 3. STUDY HELP: CLEAR BUTTON
-// -------------------------------------------------------------
-if (clearBtn) {
-  clearBtn.addEventListener('click', () => {
-    if (doubtInput) doubtInput.value = '';
-    answerBox.innerText = '';
-  });
-}
+// UI Event Listeners
+document.addEventListener("DOMContentLoaded", () => {
+  const inputField = document.getElementById("ai-input");
+  const outputDiv = document.getElementById("output");
+  const getAnswerBtn = document.getElementById("get-answer-btn");
+  const clearBtn = document.getElementById("clear-btn");
 
-// -------------------------------------------------------------
-// 4. STUDY THOUGHTS: SEARCH BUTTON
-// -------------------------------------------------------------
-if (searchBtn) {
-  searchBtn.addEventListener('click', () => {
-    const query = searchInput ? searchInput.value : '';
-    if (!query) {
-      alert("Please enter a search topic!");
-      return;
-    }
-    answerBox.innerText = Searching records for: "${query}"... (Connect your database/AI here!);
-  });
-}
+  if (getAnswerBtn) {
+    getAnswerBtn.addEventListener("click", () => {
+      const query = inputField ? inputField.value.trim() : "";
+      if (query === "") {
+        outputDiv.innerHTML = "<p style='color: #c2185b;'>Please enter a question first.</p>";
+        return;
+      }
+      outputDiv.innerHTML = processQuery(query);
+    });
+  }
 
-// -------------------------------------------------------------
-// 5. CAMPUS ROUTE & MAP LOCATOR
-// -------------------------------------------------------------
-if (routeBtn) {
-  routeBtn.addEventListener('click', () => {
-    const destination = destinationSelect ? destinationSelect.value : 'Admin block';
-    answerBox.innerText = 📍 Directions to ${destination}: Head straight past the main gate, take the first right, and continue for 100 meters.;
-  });
-}
-
-if (mapBtn) {
-  mapBtn.addEventListener('click', () => {
-    answerBox.innerHTML = `
-      <p><b>Campus Map:</b></p>
-      <iframe 
-        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3806.827289139268!2d78.6662!3d17.4522!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTfCsDI3JzA3LjkiTiA3OMKwMzknNTgzLjMiRQ!5e0!3m2!1sen!2sin!4v1600000000000!5m2!1sen!2sin" 
-        width="100%" 
-        height="250" 
-        style="border:0;" 
-        allowfullscreen="" 
-        loading="lazy">
-      </iframe>`;
-  });
-}
-      
+  if (clearBtn) {
+    clearBtn.addEventListener("click", () => {
+      if (inputField) inputField.value = "";
+      if (outputDiv) outputDiv.innerHTML = "";
+    });
+  }
+});
