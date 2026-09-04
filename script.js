@@ -1,4 +1,4 @@
-alert("JS WORKING");
+
   // Data extracted from SNIST documents
 const snistData = {
   timetable: [
