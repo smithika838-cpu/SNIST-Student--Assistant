@@ -1,0 +1,64 @@
+body{
+  backgrond-color: (135 deg, #ff0f5; #ffe4ec):
+  color: #4a1830;
+  font-family: Arial,sans-serif;
+  padding: 30 px;
+  margin: 0;
+}
+/* Main heading */
+h1 {
+  color: # B11226;
+  font-size: 36 px;
+  margin-bottom: 8 px;
+  letter-spacing: 1 px;
+}
+
+/*Section heading*/
+h2{
+  color: # B11226;
+  font-size:# 23 px;
+}
+
+/*Normal text*/
+p{
+  color:# 805064;
+  font-size: 16 px;
+  line-height: 1.6;
+}
+/*Buttons*/
+button{
+  background-color: # B11226;
+  color: white;
+  boarder: none;
+  padding: 12 px 20 px;
+  margin:6 px;
+  border-radius: 20 px;
+  font-size: 15 px;
+  cursor: pointer;
+  transition: 0.3 s;
+}
+/*Button hover effect*/
+button:hover;{
+  background-color: # b83268;
+  transform: translate Y (-2 px);
+}
+/*website boxes/cards*/
+div {
+  background-color: rgba (255,255,255,0.85);
+  padding:22 px;
+  margin-top: 22 px;
+  boarder-radius: 18 px;
+  boarder: 1 px solid # f3c4d5;
+  box-shadow:0 8 px 20 px rgba (139,30,75,0.10);
+}
+a: hover{
+  text-decoration: underline;
+}
+/*Small aesthetic highlight*/
+strong{
+  color: # B11226;
+}
+  
+  
+  
+  
