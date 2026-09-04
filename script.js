@@ -112,3 +112,18 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+// STUDY HELP
+const getAnswerBtn = document.getElementById("get-answer-btn");
+const studyInput = document.getElementById("study-input");
+
+if (getAnswerBtn && studyInput) {
+    getAnswerBtn.addEventListener("click", function () {
+        const question = studyInput.value.trim();
+
+        if (question === "") {
+            alert("Please enter your study doubt!");
+        } else {
+            alert("Study Help received: " + question);
+        }
+    });
+}
